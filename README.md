@@ -6,7 +6,7 @@ Maybe some people can learn from the code (sorry for the sparse comments), that'
 I also provide my layout file which I use for the sensors in my house.
 
 ## Wifi credentials
-Because I don't want you guys to spoof around my wifi, I didn't check in the credentials. Clever ey? So you will need to create your own credentials.h file in the base directory:
+Because I don't want you guys to spoof around my wifi, I didn't check in the credentials. Clever ey? So you will need to create your own `credentials.h` file in the base directory:
 ```c
 #define WLAN_SSID       "YOURID"
 #define WLAN_PASS       "YOURPW"
