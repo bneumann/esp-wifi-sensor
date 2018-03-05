@@ -111,7 +111,7 @@ void setup() {
   Serial.println("Development mode");
 #endif
   Serial.println("Set to STA mode");
-  WiFi.mode(WIFI_STA);
+  ///WiFi.mode(WIFI_STA);
   Serial.print("Connecting to ");
   Serial.println(WLAN_SSID);
   WiFi.begin(WLAN_SSID, WLAN_PASS);
