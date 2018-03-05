@@ -115,10 +115,10 @@ void i2c_start()
     return;
   }
   // I2C Start condition, data line goes low when clock is high
-  // 		___
-  // SDA: \______ ...
-  // 	 _____
-  // SCL:		 \____ ...
+  //       ___
+  // SDA:     \______ ...
+  //       _____
+  // SCL:       \____ ...
   i2c_setsda();
   i2c_setscl();
   i2c_clearsda();
@@ -132,11 +132,11 @@ void i2c_stop()
     i2c_throw_error();
     return;
   }
-  // I2C Start condition, data line goes low when clock is high
-  // 				    ____
+  // I2C Stop condition, data line goes high after clock is high
+  //                ____
   // SDA: ... _____/
-  // 			    ______
-  // SCL:	... ___/
+  //              ______
+  // SCL: ... ___/
   i2c_clearscl();
   i2c_clearsda();
   i2c_setscl();
