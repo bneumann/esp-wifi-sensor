@@ -8,13 +8,12 @@
 
 // DEFINES
 
-// CREATE A CREDENTIALS HEADER FILE WITH THESE DEFINES:
+// CREATE A credentials.h HEADER FILE WITH THESE DEFINES:
 // #define WLAN_SSID       "YOURID"
 // #define WLAN_PASS       "YOURPW"
 // #define DEVICE_NAME     "bathroom"
 // #define AIO_SERVER      "servername"
 // #define AIO_SERVERPORT  1883
-
 
 #define SLEEP_TIME      300
 

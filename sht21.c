@@ -13,7 +13,7 @@
 #define READ_FLAG 1
 #define MEAS_TIME 150 ///< Measurement time in ms
 #define MEAS_AND_CHECK 2 ///< Read 2 databytes and the checksum
-#define ICACHE_FLASH_ATTR
+// #define ICACHE_FLASH_ATTR
 
 typedef struct {
   uint16_t temperature;
