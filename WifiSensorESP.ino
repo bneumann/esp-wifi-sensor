@@ -62,7 +62,7 @@ void measurementDoneCb(const uint16_t *temp, const uint16_t *humid)
   Serial.println("Meas cb called");
   if (*temp && *humid)
   {
-    mqttPublish(calculateTemperature(1), calculateHumidity(1));
+    mqttPublish(calculateTemperature(*temp), calculateHumidity(*humid));
     sleep(SLEEP_TIME); // sleep 5 minutes
   }
 }
