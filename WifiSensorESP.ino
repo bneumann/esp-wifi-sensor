@@ -16,15 +16,23 @@
 // #define AIO_SERVERPORT  1883
 
 #define SLEEP_TIME 300
+#define MAX_WIFI_CONNECT_RETRIES 20
+#define MAX_MEASURE_RETRIES 10
 
 // MACROS
 #define TOPIC(location, type) "sensor/" location "/" type
 #define TEMP_TOPIC TOPIC(DEVICE_NAME, "temperature")
 #define HUMID_TOPIC TOPIC(DEVICE_NAME, "humidity")
 #ifndef PRODUCTION
+#undef SLEEP_TIME
+#define SLEEP_TIME 30
+#define DEVICE_NAME "DEBUG_SENSOR"
 #define DEBUG_TOPIC TOPIC(DEVICE_NAME, "debug")
 #endif
 #define HOST_NAME "esp_sensor_" DEVICE_NAME
+
+// FORWARD DECLARATIONS
+void MQTT_connect();
 
 // GLOBALS
 WiFiClient client;
@@ -36,9 +44,9 @@ Adafruit_MQTT_Publish debugTopic = Adafruit_MQTT_Publish(&mqtt, DEBUG_TOPIC);
 #endif
 
 // USER FUNCTIONS
-
 void sleep(long sleeptime)
 {
+  WiFi.disconnect();  
   Serial.print("Sleeping for ");
   Serial.print(sleeptime);
   Serial.println(" seconds");
@@ -65,6 +73,17 @@ void measurementDoneCb(const uint16_t *temp, const uint16_t *humid)
     mqttPublish(calculateTemperature(*temp), calculateHumidity(*humid));
     sleep(SLEEP_TIME); // sleep 5 minutes
   }
+  if(deathCount++ > MAX_MEASURE_RETRIES)
+  {
+    deathCount = 0;
+    Serial.println("Sensor not found");
+    #ifndef PRODUCTION
+    MQTT_connect();
+    debugTopic.publish(42);
+    mqtt.disconnect();
+    #endif
+    sleep(SLEEP_TIME); // sleep 5 minutes
+  }
 }
 
 // Function to connect and reconnect as necessary to the MQTT server.
@@ -76,6 +95,7 @@ void MQTT_connect()
   // Stop if already connected.
   if (mqtt.connected())
   {
+    Serial.print("Already connected to MQTT...");
     return;
   }
 
@@ -148,10 +168,15 @@ void setup()
   Serial.println(WLAN_SSID);
   WiFi.begin(WLAN_SSID, WLAN_PASS);
   WiFi.hostname(HOST_NAME);
+  int retry = MAX_WIFI_CONNECT_RETRIES;
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(1000);
     Serial.print(".");
+    if(retry-- == 0)
+    {
+      sleep(30);
+    }
   }
 
   Serial.println("");
